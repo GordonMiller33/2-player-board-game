@@ -83,7 +83,6 @@ let turn = true; //true=red, false = blue
 let playerPieces;
 let tiles;
 
-
 let selectedPiece = {
   pieceId: -1,
   piecesIndex: -1
@@ -91,6 +90,11 @@ let selectedPiece = {
 
 export default {
   name: 'GameBoard',
+  data()  {
+    return {
+
+    }
+  },
   methods: {
     getPlayerPieces() {
       tiles = document.querySelectorAll(".tile");
@@ -119,7 +123,7 @@ export default {
 
     },
     displayMovement() {
-      this.setValidMove(selectedPiece.piecesIndex);
+      //this.setValidMove(selectedPiece.piecesIndex);
       let currentSpace;
       for(let i = 0; i < 3; i++){
         currentSpace = selectedPiece.piecesIndex - 7 + i;
@@ -140,10 +144,30 @@ export default {
     },
     setValidMove(index) {
       if(tiles[index].classList.contains("dark")) {
-            tiles[index].style.backgroundColor = "#487500";
+        tiles[index].style.backgroundColor = "#487500";
       }
       else if(tiles[index].classList.contains("light")){
         tiles[index].style.backgroundColor = "#bfff00";
+      }
+    },
+    movePiece(destinationIndex) {
+      console.log("moving piece");
+      let temp = board[destinationIndex];
+      board[destinationIndex] = board[selectedPiece.piecesIndex];
+      board[selectedPiece.piecesIndex] = temp;
+      this.updateBoard();
+      //this.endTurn();
+    },
+    updateBoard() {
+      this.resetMovement();
+      for(let i = 7; i < board.length; i++) {
+        if(board[i] < 5 && board[i] > 0){
+          tiles[i].innerHTML = "<span class='blue-piece' id='" + board[i] + "'>"
+        }
+        else if(board[i] > 4) {
+          tiles[i].innerHTML = "<span class='red-piece' id='" + board[i] + "'>"
+        }
+
       }
     }
   }

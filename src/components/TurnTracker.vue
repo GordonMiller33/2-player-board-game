@@ -3,14 +3,16 @@
 		<div class="red-turn-text">Red's Turn</div>&nbsp;&nbsp;|&nbsp;&nbsp;
 		<div class="blue-turn-text">Blue's Turn</div>
 	</div>
+
 </template>
 
 <script>
 
 
 export default {
-  name: 'TurnTracker'
+	name: 'TurnTracker'
 }
+
 </script>
 
 <style>
