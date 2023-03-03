@@ -160,24 +160,14 @@ export default {
       document.getElementById(selectedPiece.pieceId).style.border = "4px solid white";
     },
     displayMovement() {
+      let spiralIterator = [-6,-1,1,6,-7,-5,5,7]
       this.setValidMove(selectedPiece.piecesIndex);
       let currentSpace;
-      for(let i = 0; i < 3; i++){
-        currentSpace = selectedPiece.piecesIndex - 7 + i;
-        if( board[currentSpace] == -1) {
-          this.setValidMove(currentSpace);
-        }
-      }
-      for(let i = 0; i < 3; i++){
-        currentSpace = selectedPiece.piecesIndex - 1 + i;
-        if( board[currentSpace] == -1) {
-          this.setValidMove(currentSpace);
-        }
-      }
-      for(let i = 0; i < 3; i++){
-        currentSpace = selectedPiece.piecesIndex + 5 + i;
-        if( board[currentSpace] == -1) {
-          this.setValidMove(currentSpace);
+      for (let i = 0; i < spiralIterator.length; i++){
+        currentSpace = selectedPiece.piecesIndex + spiralIterator[i];
+        console.log("checking index " + currentSpace);
+        if( board[currentSpace] == -1 && this.reachable(currentSpace)) {
+            this.setValidMove(currentSpace);
         }
       }
     },
@@ -188,7 +178,7 @@ export default {
       }
     },
     setValidMove(index) {
-      if(board[index] != -1){
+      if(board[index] != -1 ){
         hiddenTiles[index].appendChild(tiles[index].firstChild);
       }
       tiles[index].classList.add("hidden");
@@ -228,6 +218,14 @@ export default {
         document.getElementById("redTurn").classList.remove("red-turn-text");
         document.getElementById("blueTurn").classList.add("blue-turn-text");
       }
+    },
+    reachable(index) {
+      let reachableFlag = false;
+      if( !hiddenTiles[index-6].classList.contains("hidden") || !hiddenTiles[index-1].classList.contains("hidden") || !hiddenTiles[index+1].classList.contains("hidden") || !hiddenTiles[index+6].classList.contains("hidden") ) {      //if tile-default is hidden, that space is already a valid move
+        console.log(index + " is reachable")
+        reachableFlag = true;
+      }
+      return reachableFlag;
     }
   }
 }
