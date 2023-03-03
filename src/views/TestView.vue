@@ -10,6 +10,8 @@ import TestVue from '@/components/TestVue.vue'
 
 export default {
   name: 'TestView',
-  components: { TestVue }
+  components: {
+    TestVue
+  }
 }
 </script>
