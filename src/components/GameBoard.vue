@@ -1,7 +1,7 @@
 <template>
   <GamePiece/>
   <div class="board">
-    <!-- <div class="board-container">
+    <div class="board-container">
       <table class="board-holder">
         <tr>
           <td>
@@ -13,29 +13,55 @@
                 <td class="tile-default tile-moveTo hidden"></td>
                 <td class="tile-default tile-moveTo hidden"></td>
                 <td class="tile-default tile-moveTo hidden"></td>
+                <td class="tile-default tile-moveTo hidden"></td>
+                <td class="tile-default tile-moveTo hidden"></td>
               </tr>
               <tr>
                 <td class="tile-default tile-moveTo hidden"></td>
-                <td class="tile-default dark"><span class="piece blue-piece" id="1" v-on:click="updateState(2)"></span></td>
-                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(7)"></td>
-                <td class="tile-default light"><span class="piece blue-piece" id="2" v-on:click="updateState(2)"></span></td>
-                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(8)"></td>
-                <td class="tile-default dark"><span class="piece blue-piece" id="3" v-on:click="updateState(2)"></span></td>
-                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(9)"></td>
-                <td class="tile-default light"><span class="piece blue-piece" id="4" v-on:click="updateState(2)"></span></td>
+                <td class="tile-default light"></td>
                 <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(10)"></td>
+                <td class="tile-default dark"><span class="piece blue-piece" id="1" v-on:click="updateState(2)"></span></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(11)"></td>
+                <td class="tile-default light"><span class="piece blue-piece" id="2" v-on:click="updateState(2)"></span></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(12)"></td>
+                <td class="tile-default dark"><span class="piece blue-piece" id="3" v-on:click="updateState(2)"></span></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(13)"></td>
+                <td class="tile-default light"><span class="piece blue-piece" id="4" v-on:click="updateState(2)"></span></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(14)"></td>
+                <td class="tile-default dark"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(15)"></td>
                 <td class="tile-default tile-moveTo hidden"></td>
               </tr>
               <tr>
                 <td class="tile-default tile-moveTo hidden"></td>
-                <td class="tile-default light"></td>
-                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(13)"></td>
                 <td class="tile-default dark"></td>
-                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(14)"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(17)"></td>
                 <td class="tile-default light"></td>
-                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(15)"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(18)"></td>
                 <td class="tile-default dark"></td>
-                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(16)"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(19)"></td>
+                <td class="tile-default light"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(20)"></td>
+                <td class="tile-default dark"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(21)"></td>
+                <td class="tile-default light"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(22)"></td>
+                <td class="tile-default tile-moveTo hidden"></td>
+              </tr>
+               <tr>
+                <td class="tile-default tile-moveTo hidden"></td>
+                <td class="tile-default light"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(24)"></td>
+                <td class="tile-default dark"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(26)"></td>
+                <td class="tile-default light"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(27)"></td>
+                <td class="tile-default dark"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(28)"></td>
+                <td class="tile-default light"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(29)"></td>
+                <td class="tile-default dark"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(30)"></td>
                 <td class="tile-default tile-moveTo hidden"></td>
               </tr>
             </table>
@@ -47,25 +73,49 @@
               <tr>
                 <td class="tile-default tile-moveTo hidden"></td>
                 <td class="tile-default dark"></td>
-                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(19)"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(33)"></td>
                 <td class="tile-default light"></td>
-                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(20)"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(34)"></td>
                 <td class="tile-default dark"></td>
-                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(21)"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(35)"></td>
                 <td class="tile-default light"></td>
-                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(22)"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(36)"></td>
+                <td class="tile-default dark"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(37)"></td>
+                <td class="tile-default light"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(38)"></td>
                 <td class="tile-default tile-moveTo hidden"></td>
               </tr>
               <tr>
                 <td class="tile-default tile-moveTo hidden"></td>
+                <td class="tile-default light"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(41)"></td>
+                <td class="tile-default dark"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(42)"></td>
+                <td class="tile-default light"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(43)"></td>
+                <td class="tile-default dark"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(44)"></td>
+                <td class="tile-default light"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(45)"></td>
+                <td class="tile-default dark"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(46)"></td>
+                <td class="tile-default tile-moveTo hidden"></td>
+              </tr>
+              <tr>
+                <td class="tile-default tile-moveTo hidden"></td>
+                <td class="tile-default dark"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(48)"></td>
                 <td class="tile-default light"><span class="piece red-piece" id="5" v-on:click = "updateState(2)"></span></td>
-                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(25)"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(49)"></td>
                 <td class="tile-default dark"><span class="piece red-piece" id="6" v-on:click = "updateState(2)"></span></td>
-                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(26)"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(50)"></td>
                 <td class="tile-default light"><span class="piece red-piece" id="7" v-on:click = "updateState(2)"></span></td>
-                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(27)"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(51)"></td>
                 <td class="tile-default dark"><span class="piece red-piece" id="8" v-on:click = "updateState(2)"></span></td>
-                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(28)"></td>
+                <td class="tile-moveTo hidden moveTo-dark" v-on:click = "movePiece(52)"></td>
+                <td class="tile-default light"></td>
+                <td class="tile-moveTo hidden moveTo-light" v-on:click = "movePiece(53)"></td>
                 <td class="tile-default tile-moveTo hidden"></td>
               </tr>
               <tr>
@@ -75,23 +125,9 @@
                 <td class="tile-default tile-moveTo hidden"></td>
                 <td class="tile-default tile-moveTo hidden"></td>
                 <td class="tile-default tile-moveTo hidden"></td>
+                <td class="tile-default tile-moveTo hidden"></td>
+                <td class="tile-default tile-moveTo hidden"></td>
               </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </div> -->
-    <div class="board-container">
-      <table class="board-holder">
-        <tr>
-          <td>
-            <table class="board-half" id="board-top-half" style="border-bottom: 5px solid hotpink;">
-              </table>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <table class="board-half" id="board-bottom-half">
             </table>
           </td>
         </tr>
@@ -107,15 +143,17 @@
 
 <script>
 import GamePiece from '@/components/GamePiece.vue'
-let board;
 
-const halfBoardWidth = 2;
-const boardWidth = halfBoardWidth*2;
-const outerPadding = 1;
-const totalWidth = boardWidth + outerPadding*2;
-const numPiecesPerPlayer = 2;                   //even number of pieces per player only, minimum = 2, max = halfBoardWidth
-const numPieces = numPiecesPerPlayer*2;                                      
-const tileOffset = (boardWidth/2+1)%2;
+let board = [
+  0,0,0,0,0,0,0,0,
+  0,-1,1,2,3,4,-1,0,
+  0,-1,-1,-1,-1,-1,-1,0,
+  0,-1,-1,-1,-1,-1,-1,0,
+  0,-1,-1,-1,-1,-1,-1,0,
+  0,-1,-1,-1,-1,-1,-1,0,
+  0,-1,5,6,7,8,-1,0,
+  0,0,0,0,0,0,0,0
+  ];
 
 
 
@@ -137,7 +175,6 @@ export default {
     }
   },
   mounted() {
-    this.buildBoardInitial();
     this.updateTileList();
     playerPieces = document.querySelectorAll(".piece");
     console.log(playerPieces);
@@ -187,31 +224,36 @@ export default {
       document.getElementById(selectedPiece.pieceId).style.border = "4px solid white";
     },
     displayMovement() {
-      let spiralIterator = [-6,-1,1,6,-7,-5,5,7]          //modifiers to help the program check valid moves in the proper order, needs to build itslef
+      let spiralIterator = [-8,-1,1,8,-9,-7,7,9,-16,-2,16,2]          //modifiers to help the program check valid moves in the proper order, needs to build itslef
       this.setValidMove(selectedPiece.piecesIndex);
       let currentSpace;
       for (let i = 0; i < spiralIterator.length; i++){
         currentSpace = selectedPiece.piecesIndex + spiralIterator[i];
         console.log("checking index " + currentSpace);
-        if( board[currentSpace] == -1 && this.reachable(currentSpace)) {
+        if( board[currentSpace] == -1 && this.reachable(currentSpace, spiralIterator)) {
             this.setValidMove(currentSpace);
         }
       }
     },
     resetDisplayMovement() {
-      for(let i = 7; i < board.length; i++) {
+      for(let i = 9; i < board.length; i++) {
+        if(board[i] > 0 ){
+          tiles[i].appendChild(this.findPieceById(board[i]));
+
+        }
         tiles[i].classList.remove("hidden");
         hiddenTiles[i].classList.add("hidden");
       }
     },
     setValidMove(index) {
-      if(board[index] != -1 ){
+      if(board[index] > 0 ){
         hiddenTiles[index].appendChild(tiles[index].firstChild);
       }
       tiles[index].classList.add("hidden");
       hiddenTiles[index].classList.remove("hidden");
     },
     movePiece(destinationIndex) {
+      console.log("moving piece on " + selectedPiece.piecesIndex + " to " + destinationIndex)
       board[destinationIndex] = selectedPiece.pieceId;
       board[selectedPiece.piecesIndex] = -1;
       this.updateState(1);
@@ -246,101 +288,14 @@ export default {
         document.getElementById("blueTurn").classList.add("blue-turn-text");
       }
     },
-    reachable(index) {
+    reachable(index, spiralIterator) {
       let reachableFlag = false;
-      if( !hiddenTiles[index-6].classList.contains("hidden") || !hiddenTiles[index-1].classList.contains("hidden") || !hiddenTiles[index+1].classList.contains("hidden") || !hiddenTiles[index+6].classList.contains("hidden") ) {      //if tile-moveTo is not hidden, we know that space is already a valid move
+      if( !hiddenTiles[index+spiralIterator[0]].classList.contains("hidden") || !hiddenTiles[index+spiralIterator[1]].classList.contains("hidden") || !hiddenTiles[index+spiralIterator[2]].classList.contains("hidden") || !hiddenTiles[index+spiralIterator[3]].classList.contains("hidden") ) {      
+        //if tile-moveTo is not hidden, we know that space is already a valid move
         console.log(index + " is reachable")
         reachableFlag = true;
       }
       return reachableFlag;
-    },
-    buildBoardInitial() {
-      for(let i = 0; i < totalWidth; i++){
-        for(let j = 0; j < totalWidth; j++){
-          let index = (totalWidth*i+j);
-          if(i == 0 || i == boardWidth + 1 || j == 0 || j == boardWidth + 1){
-            board[index] = 0;
-          }
-          else{
-            board[index] = -1;
-          }
-        }
-      }
-      for(let i = 0; i < numPieces/2; i++){
-        board[totalWidth+(halfBoardWidth-((numPieces-4)/4)+i)] = i + 1;
-      }
-      for(let i = numPieces/2; i < numPieces; i++){
-        board[(totalWidth*(totalWidth-(outerPadding*2)))+(halfBoardWidth-((numPieces-4)/4)+(i-numPieces/2))] = i + 1;
-      }
-      for (let i = 0; i < ((totalWidth)/2); i++){
-        console.log("row " + i)
-        document.getElementById("board-top-half").appendChild(document.createElement("tr"));
-        for (let j = 0; j < totalWidth; j++){
-          let index = (totalWidth*i+j);
-          document.getElementById("board-top-half").childNodes[i].appendChild(this.createTile(board[index], true, ((i+j)%2)), index );
-          document.getElementById("board-top-half").childNodes[i].appendChild(this.createTile(board[index], false, ((i+j)%2)), index );
-        }
-      }
-      for (let i = 0; i < ((totalWidth)/2); i++){
-        console.log("row " + i)
-        document.getElementById("board-bottom-half").appendChild(document.createElement("tr"));
-        for (let j = 0; j < totalWidth; j++){
-          let index = (totalWidth*(i+((totalWidth)/2))+j);
-          document.getElementById("board-bottom-half").childNodes[i].appendChild(this.createTile(board[index], true, ((i+j-tileOffset)%2)), index );
-          document.getElementById("board-bottom-half").childNodes[i].appendChild(this.createTile(board[index], false, ((i+j-tileOffset)%2)), index );
-        }
-      }
-    },
-    createTile(tileCode, visible, light, index) {
-      //tileCode(number with range -1 to numPieces) determines teh type of tile to be created, -1 = empty inner tile, 0 = outer tile, 1+ = inner tile with piece 
-      //visibile(boolean) determines whether it will be hidden or not, true = visible, false = hidden
-      //light(boolean) determines whetehr an inner space is light or dark, true = light, false = dark
-      //Index(number) the index of the tile
-      let newTile = document.createElement("td");
-      newTile.setAttribute("id", index);
-      if(tileCode == 0){
-        console.log("making outer tile");
-        newTile.classList.add("tile-moveTo");
-        newTile.classList.add("tile-default");
-        newTile.classList.add("hidden");
-      }
-      else {
-        if(visible){
-          console.log("making inner tile");
-          newTile.classList.add("tile-default");
-          if(light) {
-            newTile.classList.add("light");
-          }
-          else {
-            newTile.classList.add("dark");
-          }
-          if(tileCode > 0){
-            let newPiece = document.getElementById("pieceTemplate");
-            newPiece.classList.remove("hidden");
-            newPiece.setAttribute("id",tileCode);
-            if(tileCode <= numPieces/2) {
-              console.log("adding piece");
-              newPiece.classList.add("blue-piece");
-            }
-            else {
-              console.log("adding piece");
-              newPiece.classList.add("red-piece");
-            }
-            newTile.appendChild(newPiece);
-          }
-        }
-        else {
-          newTile.classList.add("tile-moveTo");
-          newTile.classList.add("hidden");
-          if(light) {
-            newTile.classList.add("moveTo-light");
-          }
-          else {
-            newTile.classList.add("moveTo-dark");
-          }
-        }
-      }
-      return newTile;
     }
   }
 }
