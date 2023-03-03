@@ -1,5 +1,5 @@
 <template>
-  <span class="piece blue-piece" id="pieceTemplate" v-on:click="updateState(2)"></span>
+  <span class="piece hidden" v-on:click="updateState(2)"></span>
 </template>
 
 
