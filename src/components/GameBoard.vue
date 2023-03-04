@@ -22,7 +22,7 @@ import GameTile from '@/components/GameTile.vue'
 
 let board = [];
 
-const halfBoardWidth = 2;
+const halfBoardWidth = 3;
 const boardWidth = halfBoardWidth*2;
 const maxPieceMovement = 3;
 const outerPadding = maxPieceMovement;
@@ -89,11 +89,11 @@ export default {
         this.updateTurnDisplay();
       }
       if(eventCode == 2) {                                  //eventCode = 2: triggered by clicking a piece
-        if(turn && parseInt(event.target.id.substring(1,event.target.id.length)) < numPiecesPerPlayer) {         
+        if(turn && parseInt(event.target.id.substring(1,event.target.id.length)) <= numPiecesPerPlayer) {         
           //Tried to select blue piece on red's turn
           alert("It is the Red player's turn");
         }
-        else if(!turn && parseInt(event.target.id.substring(1,event.target.id.length)) >= numPiecesPerPlayer) {  //Tried to select red piece on red's turn
+        else if(!turn && parseInt(event.target.id.substring(1,event.target.id.length)) > numPiecesPerPlayer) {  //Tried to select red piece on red's turn
           alert("It is the Blue player's turn");
         }
         else {                                              //select a new piece
@@ -187,7 +187,8 @@ export default {
     },
     movePiece() {
       let destinationIndex = event.target.id;
-      if(destinationIndex != selectedPiece.pieceId && destinationIndex != selectedPiece.piecesIndex && tiles[destinationIndex].classList.contains("valid-move")) {
+      console.log("Destination:" + destinationIndex);
+      if( destinationIndex.charAt(0) != 'p' && tiles[destinationIndex].classList.contains("valid-move")) {
         console.log("moving piece from " + selectedPiece.piecesIndex + " to " + destinationIndex)
         board[destinationIndex] = selectedPiece.pieceIdNum;
         board[selectedPiece.piecesIndex] = -1;
