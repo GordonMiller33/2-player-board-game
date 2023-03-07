@@ -8,7 +8,7 @@
 export default {
   name: 'GameTile',
   methods: {
-      movePiece() {                                //eventCode that determines what caused the updateState function to be called
+      movePiece() {
         this.$parent.movePiece();
       }
   }

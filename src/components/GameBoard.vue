@@ -3,8 +3,8 @@
   <div class="board">
     <div class="board-container">
       <table class="board-holder">
-        <tr v-for="(item, i) in totalWidth" v-bind:key="i">
-          <GameTile v-for="(item, j) in totalWidth" v-bind:key="j" v-bind:id="totalWidth*i+j"></GameTile>
+        <tr v-for="(item, i) in store.totalWidth" v-bind:key="i">
+          <GameTile v-for="(item, j) in store.totalWidth" v-bind:key="j" v-bind:id="store.totalWidth*i+j"></GameTile>
         </tr>
       </table>
     </div>
@@ -16,38 +16,24 @@
   </div>
 </template>
 
+
+<script setup>
+
+</script>
 <script>
 import GamePiece from '@/components/GamePiece.vue'
 import GameTile from '@/components/GameTile.vue'
+import { useBaseStore } from '@/stores/BaseStore.js';
 
+const store = useBaseStore();
 let board = [];
 
-const halfBoardWidth = 3;
-const boardWidth = halfBoardWidth*2;
-const maxPieceMovement = 3;
-const outerPadding = maxPieceMovement;
-const totalWidth = boardWidth + outerPadding*2;
+let halfBoardWidth = store.boardWidth/2;
+let maxPieceMovement = 3;
+let totalWidth = store.boardWidth+store.maxPieceMovement*2;
 const numPiecesPerPlayer = 2;                   //even number of pieces per player only, minimum = 2, max = halfBoardWidth
 const numPieces = numPiecesPerPlayer*2;                                      
 //const tileOffset = (boardWidth/2+1)%2;
-
-for(let i = 0; i < totalWidth; i++){
-  for(let j = 0; j < totalWidth; j++){
-    let index = (totalWidth*i+j);
-    if(i < outerPadding || i >= boardWidth + outerPadding || j < outerPadding|| j >= boardWidth + outerPadding){
-      board[index] = 0;
-    }
-    else{
-      board[index] = -1;
-    }
-  }
-}
-for(let i = 0; i < numPieces/2; i++){
-  board[(totalWidth*outerPadding)+((halfBoardWidth)-((numPieces-(4*outerPadding))/4)+i)] = i + 1;
-}
-for(let i = numPieces/2; i < numPieces; i++){
-  board[(totalWidth*((totalWidth-(outerPadding))-1))+(halfBoardWidth-((numPieces-(4*outerPadding))/4)+(i-numPieces/2))] = i + 1;
-}
 
 let turn = true; //true=red, false = blue
 let playerPieces;
@@ -63,18 +49,38 @@ export default {
   name: 'GameBoard',
   data()  {
     return {
-      numTiles: totalWidth * totalWidth,
       totalWidth: totalWidth,
-      board: board,
-      numPieces: numPieces
+      numPieces: numPieces,
+      store: store,
+      board: board
     }
   },
   mounted() {
+    totalWidth = store.boardWidth + store.maxPieceMovement*2;
+    console.log(totalWidth);
+    for(let i = 0; i < totalWidth; i++){
+      for(let j = 0; j < totalWidth; j++){
+        let index = (totalWidth*i+j);
+        if(i < maxPieceMovement || i >= store.boardWidth + maxPieceMovement || j < maxPieceMovement|| j >= store.boardWidth + maxPieceMovement){
+          board[index] = 0;
+        }
+        else{
+          board[index] = -1;
+        }
+      }
+    }
+    for(let i = 0; i < numPieces/2; i++){
+      board[(totalWidth*maxPieceMovement)+((halfBoardWidth)-((numPieces-(4*maxPieceMovement))/4)+i)] = i + 1;
+    }
+    for(let i = numPieces/2; i < numPieces; i++){
+      board[(totalWidth*((totalWidth-(maxPieceMovement))-1))+(halfBoardWidth-((numPieces-(4*maxPieceMovement))/4)+(i-numPieces/2))] = i + 1;
+    }
+    console.log(board);
     this.setInitalTileProperties();
     playerPieces = document.querySelectorAll(".piece");
     tiles = document.querySelectorAll(".tile-default");
+    console.log(tiles);
     this.updateBoard();
-    console.log(playerPieces);
   },
   components: {
     GamePiece,
@@ -129,10 +135,8 @@ export default {
     },
     setSelectedPiece() {
       selectedPiece.pieceId = event.target.id;
-      console.log(selectedPiece.pieceId.substring(1,selectedPiece.pieceId.length));
       selectedPiece.pieceIdNum = parseInt(selectedPiece.pieceId.substring(1,selectedPiece.pieceId.length));
       selectedPiece.piecesIndex = board.indexOf(selectedPiece.pieceIdNum);
-      console.log("selectedpieceIndex = " + board.indexOf(selectedPiece.pieceIdNum));
       this.findPieceByIdNum(selectedPiece.pieceIdNum).style.border = "4px solid white";
     },
     displayMovement() {
@@ -187,9 +191,7 @@ export default {
     },
     movePiece() {
       let destinationIndex = event.target.id;
-      console.log("Destination:" + destinationIndex);
       if( destinationIndex.charAt(0) != 'p' && tiles[destinationIndex].classList.contains("valid-move")) {
-        console.log("moving piece from " + selectedPiece.piecesIndex + " to " + destinationIndex)
         board[destinationIndex] = selectedPiece.pieceIdNum;
         board[selectedPiece.piecesIndex] = -1;
         this.updateState(1);
@@ -199,7 +201,6 @@ export default {
       this.resetDisplayMovement();
       for(let i = 0; i < board.length; i++) {
         if(board[i] > 0) {
-          console.log("piece at index " + i)
           tiles[i].appendChild(this.findPieceByIdNum(board[i]));
         }
       }
@@ -225,12 +226,6 @@ export default {
     reachable(index) {
       let reachableFlag = false;
       if( tiles[index].classList.contains("valid-move") || tiles[index-1].classList.contains("valid-move") ||  tiles[index+1].classList.contains("valid-move") ||  tiles[index-totalWidth].classList.contains("valid-move") ||  tiles[index+totalWidth].classList.contains("valid-move")) { 
-        console.log("test 1 self " + tiles[index].classList.contains("valid-move"));
-        console.log("test 2 left " + tiles[index-1].classList.contains("valid-move"));  
-        console.log("test 3 right " + tiles[index+1].classList.contains("valid-move"));  
-        console.log("test 4 up " + tiles[index-totalWidth].classList.contains("valid-move"));  
-        console.log("test 5 down " + tiles[index+totalWidth].classList.contains("valid-move"));      
-        console.log(index + " is reachable")
         reachableFlag = true;
       }
       return reachableFlag;
@@ -240,15 +235,14 @@ export default {
       //visibile(boolean) determines whether it will be hidden or not, true = visible, false = hidden
       //light(boolean) determines whetehr an inner space is light or dark, true = light, false = dark
       //Index(number) the index of the tile
+      console.log("index " + index)
       let t = document.getElementById(index);
       if(tileCode == 0){
-        console.log("making outer tile");
         t.classList.add("tile-moveTo");
         t.classList.add("tile-default");
         t.classList.add("hidden");
       }
       else {
-        console.log("making inner tile");
         t.classList.add("tile-default");
         if(light) {
           t.classList.add("light");
@@ -257,14 +251,11 @@ export default {
           t.classList.add("dark");
         }
         if(tileCode > 0){
-          console.log("looking for piece p" + nextP)
           let p = document.getElementById("p" + nextP);
           if(tileCode <= numPieces/2) {
-            console.log("adding blue piece");
             p.classList.add("blue-piece");
           }
           else {
-            console.log("adding red piece");
             p.classList.add("red-piece");
           }
           t.appendChild(p);
