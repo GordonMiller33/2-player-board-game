@@ -29,8 +29,8 @@ let totalWidth = boardWidth+maxPieceMovement*2;
 let halfBoardWidth = boardWidth/2;
 let board = [];
 
-const numPiecesPerPlayer = 2;                   //even number of pieces per player only, minimum = 2, max = halfBoardWidth
-const numPieces = numPiecesPerPlayer*2;                                      
+let numPiecesPerPlayer = parseInt(store.piecesPerPlayer);                  
+let numPieces = numPiecesPerPlayer*2;                                      
 //const tileOffset = (boardWidth/2+1)%2;
 let playerPieces;
 let tiles;
@@ -57,6 +57,8 @@ export default {
     maxPieceMovement = parseInt(store.movementSpeed);
     totalWidth = boardWidth+maxPieceMovement*2;
     halfBoardWidth = boardWidth/2;
+    numPiecesPerPlayer = parseInt(store.piecesPerPlayer);                  
+    numPieces = numPiecesPerPlayer*2;     
     for(let i = 0; i < totalWidth; i++){
       for(let j = 0; j < totalWidth; j++){
         let index = (totalWidth*i+j);

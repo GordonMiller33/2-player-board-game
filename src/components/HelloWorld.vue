@@ -5,7 +5,7 @@
     <input v-model="store.boardWidth" placeholder="edit me" />
     <p><b>Movement Speed</b></p>
     <input v-model="store.movementSpeed" placeholder="edit me" />
-    <p><b>Pieces per Player</b><br>(max=Board Width)</p>
+    <p><b>Pieces per Player</b><br>(even only, max=Board Width)</p>
     <input v-model="store.piecesPerPlayer" placeholder="edit me" />
   </div>
 </template>
