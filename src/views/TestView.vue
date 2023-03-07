@@ -1,17 +1,26 @@
 <template>
   <div class="test">
-    <TestVue/>
+    <TestVue v-for="(item, i) in boardWidth" v-bind:key="i"/>
   </div>
 </template>
 
+<script setup>
+console.log("------script setup------")
+import { useBaseStore } from '@/stores/BaseStore.js';
+let boardWidth = parseInt(store.boardWidth);
+</script>
+
 <script>
-// @ is an alias to /src
 import TestVue from '@/components/TestVue.vue'
+const store = useBaseStore();
 
 export default {
   name: 'TestView',
   components: {
     TestVue
+  },
+  methods: {
+
   }
 }
 </script>

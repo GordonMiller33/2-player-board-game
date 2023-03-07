@@ -4,7 +4,9 @@ export const useBaseStore = defineStore( "BaseStore", {
 
 	state: () => {
 		return{
-			boardWidth: 30,
+			boardWidth: 6,
+			movementSpeed: 2,
+			piecesPerPlayer: 2
 		}
 	}
 

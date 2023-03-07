@@ -9,7 +9,7 @@ export default {
   name: 'GameTile',
   methods: {
       movePiece() {
-        this.$parent.movePiece();
+        this.$emit("move-piece");
       }
   }
 }

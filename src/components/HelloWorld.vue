@@ -1,12 +1,12 @@
 <template>
   <div class="design">
     <h1>Design your custom game board</h1>
-    <p>Board width is: {{ store.boardWidth }}</p>
+    <p><b>Board Width</b><br>(even numbers only)</p>
     <input v-model="store.boardWidth" placeholder="edit me" />
-    <p>Number of pieces is: {{ numPiecesPerPlayer }}</p>
-    <input v-model="numPiecesPerPlayer" placeholder="edit me" />
-    <p>Movement Speed is: {{ movementSpeed }}</p>
-    <input v-model="movementSpeed" placeholder="edit me" />
+    <p><b>Movement Speed</b></p>
+    <input v-model="store.movementSpeed" placeholder="edit me" />
+    <p><b>Pieces per Player</b><br>(max=Board Width)</p>
+    <input v-model="store.piecesPerPlayer" placeholder="edit me" />
   </div>
 </template>
 
@@ -23,8 +23,8 @@ export default {
   data (){
     return {
       boardWidth: null,
-      numPiecesPerPlayer: null,
-      movementSpeed: null
+      movementSpeed: null,
+      piecesPerPlayer: null
     }
   }
 }

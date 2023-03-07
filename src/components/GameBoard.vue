@@ -1,41 +1,37 @@
 <template>
-  <GamePiece v-for="(item, index) in numPieces" v-bind:key="index" v-bind:id="'p'+(index+1)"/>
+  <GamePiece v-for="(item, index) in numPieces" v-bind:key="index" v-bind:id="'p'+(index+1)" v-on:update-state="updateState(2)"/>
   <div class="board">
     <div class="board-container">
       <table class="board-holder">
-        <tr v-for="(item, i) in store.totalWidth" v-bind:key="i">
-          <GameTile v-for="(item, j) in store.totalWidth" v-bind:key="j" v-bind:id="store.totalWidth*i+j"></GameTile>
+        <tr v-for="(item, i) in totalWidth" v-bind:key="i">
+          <GameTile v-for="(item, j) in totalWidth" v-bind:key="j" v-bind:id="totalWidth*i+j" v-on:move-piece="movePiece()"></GameTile>
         </tr>
       </table>
     </div>
-  </div>
-  <div class="tracker-container">
-    <div class="red-turn-text" id="redTurn">Red's Turn</div>
-    &nbsp;&nbsp;|&nbsp;&nbsp;
-    <div id="blueTurn">Blue's Turn</div>
   </div>
 </template>
 
 
 <script setup>
-
+console.log("------script setup------")
+import { useBaseStore } from '@/stores/BaseStore.js';
+//let boardWidth = parseInt(store.boardWidth);
+//let totalWidth = boardWidth+3*2;
 </script>
 <script>
 import GamePiece from '@/components/GamePiece.vue'
 import GameTile from '@/components/GameTile.vue'
-import { useBaseStore } from '@/stores/BaseStore.js';
 
 const store = useBaseStore();
+let boardWidth = parseInt(store.boardWidth);
+let maxPieceMovement = parseInt(store.movementSpeed);
+let totalWidth = boardWidth+maxPieceMovement*2;
+let halfBoardWidth = boardWidth/2;
 let board = [];
 
-let halfBoardWidth = store.boardWidth/2;
-let maxPieceMovement = 3;
-let totalWidth = store.boardWidth+store.maxPieceMovement*2;
 const numPiecesPerPlayer = 2;                   //even number of pieces per player only, minimum = 2, max = halfBoardWidth
 const numPieces = numPiecesPerPlayer*2;                                      
 //const tileOffset = (boardWidth/2+1)%2;
-
-let turn = true; //true=red, false = blue
 let playerPieces;
 let tiles;
 
@@ -55,13 +51,16 @@ export default {
       board: board
     }
   },
-  mounted() {
-    totalWidth = store.boardWidth + store.maxPieceMovement*2;
-    console.log(totalWidth);
+  created() {
+    board = [];
+    boardWidth = parseInt(store.boardWidth);
+    maxPieceMovement = parseInt(store.movementSpeed);
+    totalWidth = boardWidth+maxPieceMovement*2;
+    halfBoardWidth = boardWidth/2;
     for(let i = 0; i < totalWidth; i++){
       for(let j = 0; j < totalWidth; j++){
         let index = (totalWidth*i+j);
-        if(i < maxPieceMovement || i >= store.boardWidth + maxPieceMovement || j < maxPieceMovement|| j >= store.boardWidth + maxPieceMovement){
+        if(i < maxPieceMovement || i >= boardWidth + maxPieceMovement || j < maxPieceMovement|| j >= boardWidth + maxPieceMovement){
           board[index] = 0;
         }
         else{
@@ -75,10 +74,14 @@ export default {
     for(let i = numPieces/2; i < numPieces; i++){
       board[(totalWidth*((totalWidth-(maxPieceMovement))-1))+(halfBoardWidth-((numPieces-(4*maxPieceMovement))/4)+(i-numPieces/2))] = i + 1;
     }
+  },
+  mounted() {
+    console.log("board:");
     console.log(board);
     this.setInitalTileProperties();
     playerPieces = document.querySelectorAll(".piece");
     tiles = document.querySelectorAll(".tile-default");
+    console.log("tiles:");
     console.log(tiles);
     this.updateBoard();
   },
@@ -88,26 +91,16 @@ export default {
   },
   methods: {
     updateState(eventCode) {                                //eventCode that determines what caused the updateState function to be called
+      console.log('State Updated')
       if(eventCode == 1) {                                  //eventCode = 1: triggered by end of turn, change active player
         this.resetSelectedPiece();
         this.updateBoard();
-        turn = !turn;
-        this.updateTurnDisplay();
       }
       if(eventCode == 2) {                                  //eventCode = 2: triggered by clicking a piece
-        if(turn && parseInt(event.target.id.substring(1,event.target.id.length)) <= numPiecesPerPlayer) {         
-          //Tried to select blue piece on red's turn
-          alert("It is the Red player's turn");
-        }
-        else if(!turn && parseInt(event.target.id.substring(1,event.target.id.length)) > numPiecesPerPlayer) {  //Tried to select red piece on red's turn
-          alert("It is the Blue player's turn");
-        }
-        else {                                              //select a new piece
-          this.resetSelectedPiece();
-          this.updateBoard();
-          this.setSelectedPiece();
-          this.displayMovement();
-        }
+        this.resetSelectedPiece();
+        this.updateBoard();
+        this.setSelectedPiece();
+        this.displayMovement();
       }
     },
     setInitalTileProperties(){
@@ -163,17 +156,17 @@ export default {
       let cl;
       for(let i = 0; i < board.length; i++) {
         cl = tiles[i].classList;
-        tiles[i].classList.remove("valid-move");
+        cl.remove("valid-move");
         for(let i = 0; i < maxPieceMovement; i++){
           cl.remove("distance-" + i);
         }
-        if(tiles[i].classList.contains("moveTo-dark")){
-          tiles[i].classList.remove("moveTo-dark");
-          tiles[i].classList.add("dark");
+        if(cl.contains("moveTo-dark")){
+          cl.remove("moveTo-dark");
+          cl.add("dark");
         }
-        else if(tiles[i].classList.contains("moveTo-light")){
-          tiles[i].classList.remove("moveTo-light");
-          tiles[i].classList.add("light");
+        else if(cl.contains("moveTo-light")){
+          cl.remove("moveTo-light");
+          cl.add("light");
         }
       }
     },
@@ -213,16 +206,6 @@ export default {
       }
       return -1;
     },
-    updateTurnDisplay() {
-      if(turn){
-        document.getElementById("redTurn").classList.add("red-turn-text");
-        document.getElementById("blueTurn").classList.remove("blue-turn-text");
-      }
-      else{
-        document.getElementById("redTurn").classList.remove("red-turn-text");
-        document.getElementById("blueTurn").classList.add("blue-turn-text");
-      }
-    },
     reachable(index) {
       let reachableFlag = false;
       if( tiles[index].classList.contains("valid-move") || tiles[index-1].classList.contains("valid-move") ||  tiles[index+1].classList.contains("valid-move") ||  tiles[index-totalWidth].classList.contains("valid-move") ||  tiles[index+totalWidth].classList.contains("valid-move")) { 
@@ -235,7 +218,6 @@ export default {
       //visibile(boolean) determines whether it will be hidden or not, true = visible, false = hidden
       //light(boolean) determines whetehr an inner space is light or dark, true = light, false = dark
       //Index(number) the index of the tile
-      console.log("index " + index)
       let t = document.getElementById(index);
       if(tileCode == 0){
         t.classList.add("tile-moveTo");
