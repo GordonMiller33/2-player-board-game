@@ -6,8 +6,9 @@ export const useBaseStore = defineStore( "BaseStore", {
 		return{
 			boardWidth: 6,
 			movementSpeed: 2,
-			piecesPerPlayer: 2
+			piecesPerPlayer: 2,
+			numPieces: 0,
+			customPieces: []
 		}
 	}
-
 })

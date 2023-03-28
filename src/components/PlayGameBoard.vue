@@ -15,8 +15,6 @@
 <script setup>
 console.log("------script setup------")
 import { useBaseStore } from '@/stores/BaseStore.js';
-//let boardWidth = parseInt(store.boardWidth);
-//let totalWidth = boardWidth+3*2;
 </script>
 <script>
 import GamePiece from '@/components/GamePiece.vue'
@@ -58,7 +56,7 @@ export default {
     totalWidth = boardWidth+maxPieceMovement*2;
     halfBoardWidth = boardWidth/2;
     numPiecesPerPlayer = parseInt(store.piecesPerPlayer);                  
-    numPieces = numPiecesPerPlayer*2;     
+    numPieces = numPiecesPerPlayer*2;
     for(let i = 0; i < totalWidth; i++){
       for(let j = 0; j < totalWidth; j++){
         let index = (totalWidth*i+j);

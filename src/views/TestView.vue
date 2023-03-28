@@ -20,7 +20,10 @@ export default {
     TestVue
   },
   methods: {
-
+    
+  },
+  created() {
+    alert(store.customPieces);
   }
 }
 </script>

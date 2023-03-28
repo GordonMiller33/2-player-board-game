@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="My logo" src="../assets/logo.png">
+    <img alt="My logo" src="../assets/logo.webp">
     <BoardDesign/>
   </div>
 </template>
