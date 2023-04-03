@@ -7,7 +7,7 @@
 
 <script>
 // @ is an alias to /src
-import BoardDesign from '@/components/BoardDesign.vue'
+import BoardDesign from '@/components/BoardSettings.vue'
 
 export default {
   name: 'HomeView',

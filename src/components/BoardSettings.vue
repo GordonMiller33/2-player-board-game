@@ -7,7 +7,7 @@
     <input v-model="store.movementSpeed" placeholder="edit me" />
     <p><b>Pieces per Player</b><br>(even only, max=Board Width)</p>
     <input v-model="store.piecesPerPlayer" placeholder="edit me" />
-    <h2>Head to the "Game" tab to see your custom board</h2>
+    <h2>Head to the "Play Game" tab to see your custom board</h2>
 
   </div>
 </template>

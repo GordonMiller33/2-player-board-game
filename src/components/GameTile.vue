@@ -1,5 +1,5 @@
 <template>
-  <td v-on:click="movePiece()"></td>
+  <td v-on:click="tileClick()"></td>
 </template>
 
 
@@ -8,8 +8,8 @@
 export default {
   name: 'GameTile',
   methods: {
-      movePiece() {
-        this.$emit("move-piece");
+      tileClick() {
+        this.$emit("tile-click");
       }
   }
 }

@@ -1,8 +1,8 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/pieces">Customize Pieces</router-link> |
-    <router-link to="/game">Game</router-link> |
+    <router-link to="/">Board Settings</router-link> |
+    <router-link to="/pieces">Piece Settings</router-link> |
+    <router-link to="/game">Play Game</router-link> |
     <router-link to="/test">Test</router-link>
   </nav>
   <router-view/>

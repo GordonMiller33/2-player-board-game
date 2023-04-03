@@ -1,5 +1,5 @@
 <template>
-  <span class="piece hidden" v-on:click="updateState()"></span>
+  <span class="piece hidden" v-on:click="clickPiece()"></span>
 </template>
 
 
@@ -8,8 +8,8 @@
 export default {
   name: 'GamePiece',
   methods: {
-    updateState() {                                //eventCode that determines what caused the updateState function to be called
-      this.$emit("update-state");
+    clickPiece() {                                //eventCode that determines what caused the updateState function to be called
+      this.$emit("click-piece");
     }
   }
 }

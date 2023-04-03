@@ -1,10 +1,10 @@
 <template>
-  <GamePiece v-for="(item, index) in numPieces" v-bind:key="index" v-bind:id="'p'+(index+1)" v-on:update-state="updateState(2)"/>
+  <GamePiece v-for="(item, index) in numPieces" v-bind:key="index" v-bind:id="'p'+(index+1)" v-on:click-piece="updateState(2)"/>
   <div class="board">
     <div class="board-container">
       <table class="board-holder">
         <tr v-for="(item, i) in totalWidth" v-bind:key="i">
-          <GameTile v-for="(item, j) in totalWidth" v-bind:key="j" v-bind:id="totalWidth*i+j" v-on:move-piece="movePiece()"></GameTile>
+          <GameTile v-for="(item, j) in totalWidth" v-bind:key="j" v-bind:id="totalWidth*i+j" v-on:tile-click="movePiece()"></GameTile>
         </tr>
       </table>
     </div>
@@ -105,15 +105,15 @@ export default {
     },
     setInitalTileProperties(){
       let lightFlag = false;
-      let nextPieceIndex = 1;
+      let pieceIndex = 1;
       for (let i = 0; i < (totalWidth); i++){
         lightFlag = !lightFlag;
         for (let j = 0; j < totalWidth; j++){
           let index = (totalWidth*i+j);
-          this.setTile(index, board[index], lightFlag, nextPieceIndex);
+          this.setTile(index, board[index], lightFlag, pieceIndex);
           lightFlag = !lightFlag;
           if(board[index] > 0){
-            nextPieceIndex++;
+            pieceIndex++;
           }
         }
       }
