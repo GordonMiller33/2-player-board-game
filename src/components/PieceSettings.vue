@@ -1,5 +1,4 @@
 <template>
-  <GamePiece v-for="(item, index) in numPieces" v-bind:key="index" v-bind:id="'p'+(index+1)" v-on:click-piece="updateState(2)"/>
   <div class="board">
     <div class="board-container">
       <table class="board-holder">
@@ -10,7 +9,7 @@
     </div>
   </div>
   <p><b>Pieces per Player</b><br>(even only, max=Board Width)</p>
-  <input v-bind:id="piece_number" placeholder="edit me" />
+  <input id="piece_number" placeholder="edit me" />
 </template>
 
 <script setup>
@@ -18,7 +17,6 @@ console.log("------script setup------")
 import { useBaseStore } from '@/stores/BaseStore.js';
 </script>
 <script>
-import GamePiece from '@/components/GamePiece.vue'
 import GameTile from '@/components/GameTile.vue'
 
 
@@ -27,7 +25,7 @@ let boardWidth = parseInt(store.boardWidth);
 let maxPieceMovement = parseInt(store.movementSpeed);
 let totalWidth = boardWidth+maxPieceMovement*2;
 let board = [];
-let numPieces = 0;
+let nextPiece = 1;
 
 
 //let pieces;
@@ -47,19 +45,34 @@ export default {
     }
   },
   created() {
-    numPieces = 0;
     board = [];
     boardWidth = parseInt(store.boardWidth);
     maxPieceMovement = parseInt(store.movementSpeed);
     totalWidth = boardWidth+maxPieceMovement*2;
+    nextPiece = 1;
+
+    if(store.board.length != (totalWidth * totalWidth)){
+      for(let i = 0; i < totalWidth; i++){
+        for(let j = 0; j < totalWidth; j++){
+          let index = (totalWidth*i+j);
+          if(i < maxPieceMovement || i >= boardWidth + maxPieceMovement || j < maxPieceMovement|| j >= boardWidth + maxPieceMovement){
+            store.board[index] = 0;
+          }
+          else{
+            store.board[index] = -1;
+          }
+        }
+      }
+    }
+
     for(let i = 0; i < totalWidth; i++){
       for(let j = 0; j < totalWidth; j++){
         let index = (totalWidth*i+j);
         if(i < maxPieceMovement || i >= boardWidth + maxPieceMovement || j < maxPieceMovement|| j >= boardWidth + maxPieceMovement){
-          board[index] = 0;
+          board[index] = store.board[index];
         }
         else{
-          board[index] = -1;
+          board[index] = store.board[index];
         }
       }
     }
@@ -74,7 +87,6 @@ export default {
     this.updateBoard();
   },
   components: {
-    GamePiece,
     GameTile
   },
   methods: {
@@ -119,7 +131,7 @@ export default {
     },
     selectNewTile() {
       let cl;
-      this.storeTileData();
+      if(document.getElementById("piece_number").value != null) { this.storeTileData(); }
       this.deselectCurrentTile();
       selectedTile.id = event.target.id;
       selectedTile.element = document.getElementById(selectedTile.id);
@@ -149,11 +161,21 @@ export default {
       }
     }, 
     storeTileData() {
-      store.customPieces[numPieces] = document.getElementById("piece_number").value;
-      numPieces++;
+      let data = document.getElementById("piece_number").value;
+      if(store.board[selectedTile.id] > 0){
+        store.customPieces[store.board[selectedTile.id]] = data;
+      }
+      else {
+        store.customPieces[nextPiece] = data;
+        store.board[selectedTile.id] = nextPiece;
+        nextPiece++;
+        store.numPieces++;
+      }
+      
+      document.getElementById("piece_number").value = null;
     }, 
     loadTileData() {
-      document.getElementById("piece_number").value
+      document.getElementById("piece_number").value = store.customPieces[store.board[selectedTile.id]];
     }
   }
 }
