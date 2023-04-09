@@ -61,10 +61,10 @@ export default {
       for(let j = 0; j < totalWidth; j++){
         let index = (totalWidth*i+j);
         if(i < maxPieceMovement || i >= boardWidth + maxPieceMovement || j < maxPieceMovement|| j >= boardWidth + maxPieceMovement){
-          board[index] = 0;
+          board[index] = store.OUTER_TILE_ID;
         }
         else{
-          board[index] = -1;
+          board[index] = store.INNER_TILE_ID;
         }
       }
     }
@@ -112,7 +112,7 @@ export default {
           let index = (totalWidth*i+j);
           this.setTile(index, board[index], lightFlag, pieceIndex);
           lightFlag = !lightFlag;
-          if(board[index] > 0){
+          if(board[index] > -1){
             pieceIndex++;
           }
         }
@@ -142,7 +142,7 @@ export default {
             index = (selectedPiece.piecesIndex-(totalWidth*(x)) - (x)) + (i * totalWidth) + j;
             if(tiles[index].classList.contains("valid-move") && tiles[index].classList.contains("distance-" + (x-1))){
               for(let n = 0; n < 4; n++){
-                if( board[index + adjacentIterator[n]] == -1){
+                if( board[index + adjacentIterator[n]] == store.INNER_TILE_ID){
                   this.setValidMove(index + adjacentIterator[n], x);
                 }
               }
@@ -186,14 +186,14 @@ export default {
       let destinationIndex = event.target.id;
       if( destinationIndex.charAt(0) != 'p' && tiles[destinationIndex].classList.contains("valid-move")) {
         board[destinationIndex] = selectedPiece.pieceIdNum;
-        board[selectedPiece.piecesIndex] = -1;
+        board[selectedPiece.piecesIndex] = store.INNER_TILE_ID;
         this.updateState(1);
       }
     },
     updateBoard() {
       this.resetDisplayMovement();
       for(let i = 0; i < board.length; i++) {
-        if(board[i] > 0) {
+        if(board[i] > store.MAX_EMPTY_TILE_ID) {
           tiles[i].appendChild(this.findPieceByIdNum(board[i]));
         }
       }
@@ -214,12 +214,12 @@ export default {
       return reachableFlag;
     },
     setTile(index, tileCode, light, nextP) {
-      //tileCode(number with range -1 to numPieces) determines teh type of tile to be created, -1 = empty inner tile, 0 = outer tile, 1+ = inner tile with piece 
+      //tileCode(number) determines teh type of tile to be created
       //visibile(boolean) determines whether it will be hidden or not, true = visible, false = hidden
       //light(boolean) determines whetehr an inner space is light or dark, true = light, false = dark
       //Index(number) the index of the tile
       let t = document.getElementById(index);
-      if(tileCode == 0){
+      if(tileCode == store.OUTER_TILE_ID){
         t.classList.add("tile-moveTo");
         t.classList.add("tile-default");
         t.classList.add("hidden");
@@ -232,7 +232,7 @@ export default {
         else {
           t.classList.add("dark");
         }
-        if(tileCode > 0){
+        if(tileCode > store.MAX_EMPTY_TILE_ID){
           let p = document.getElementById("p" + nextP);
           if(tileCode <= numPieces/2) {
             p.classList.add("blue-piece");

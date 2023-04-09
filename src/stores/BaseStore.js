@@ -9,7 +9,10 @@ export const useBaseStore = defineStore( "BaseStore", {
 			piecesPerPlayer: 2,
 			numPieces: 0,
 			customPieces: [],
-			board: []
+			board: [],
+			OUTER_TILE_ID: -2,
+			EMPTY_TILE_ID: -1,
+			MAX_EMPTY_TILE_ID: -1
 		}
 	}
 })

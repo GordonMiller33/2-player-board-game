@@ -8,8 +8,8 @@
       </table>
     </div>
   </div>
-  <p><b>Pieces per Player</b><br>(even only, max=Board Width)</p>
-  <input id="piece_number" placeholder="edit me" />
+  <p><b>Piece Data</b></p>
+  <input id="piece_data" placeholder="edit me" />
 </template>
 
 <script setup>
@@ -25,18 +25,21 @@ let boardWidth = parseInt(store.boardWidth);
 let maxPieceMovement = parseInt(store.movementSpeed);
 let totalWidth = boardWidth+maxPieceMovement*2;
 let board = [];
-let nextPiece = 1;
+let nextPieceId = 0;
 
 
 //let pieces;
 let tiles;
 
 let selectedTile = {
-  id: 0,
+  id: -1,
   element: null
 }
 
-
+let selectedPiece = {
+  id: -1,
+  data: null
+}
 
 export default {  
   name: 'PieceSettings',
@@ -49,21 +52,25 @@ export default {
     boardWidth = parseInt(store.boardWidth);
     maxPieceMovement = parseInt(store.movementSpeed);
     totalWidth = boardWidth+maxPieceMovement*2;
-    nextPiece = 1;
 
     if(store.board.length != (totalWidth * totalWidth)){
+      store.customPieces = [];
       for(let i = 0; i < totalWidth; i++){
         for(let j = 0; j < totalWidth; j++){
           let index = (totalWidth*i+j);
           if(i < maxPieceMovement || i >= boardWidth + maxPieceMovement || j < maxPieceMovement|| j >= boardWidth + maxPieceMovement){
-            store.board[index] = 0;
+            store.board[index] = store.OUTER_TILE_ID;
           }
           else{
-            store.board[index] = -1;
+            store.board[index] = store.EMPTY_TILE_ID;
           }
         }
       }
     }
+    else{
+      nextPieceId = store.customPieces.length;
+    }
+    console.log("customPieces: " + store.customPieces);
 
     for(let i = 0; i < totalWidth; i++){
       for(let j = 0; j < totalWidth; j++){
@@ -76,6 +83,8 @@ export default {
         }
       }
     }
+
+    
   },
   mounted() {
     console.log("board:");
@@ -92,8 +101,9 @@ export default {
   methods: {
     updateBoard() {
       for(let i = 0; i < board.length; i++) {
-        if(board[i] > 0) {
-          tiles[i].appendChild(this.findPieceByIdNum(board[i]));
+        if(board[i] > store.EMPTY_TILE_ID) {
+          //comment
+
         }
       }
     },
@@ -109,12 +119,12 @@ export default {
       }
     },
     setTile(index, tileCode, light) {
-      //tileCode(number with range -1 to numPieces) determines teh type of tile to be created, -1 = empty inner tile, 0 = outer tile, 1+ = inner tile with piece 
+      //tileCode(number with range -1 to numPieces) determines the type of tile to be created, -1 = empty inner tile, -2 = outer tile
       //visibile(boolean) determines whether it will be hidden or not, true = visible, false = hidden
       //light(boolean) determines whetehr an inner space is light or dark, true = light, false = dark
       //Index(number) the index of the tile
       let t = document.getElementById(index);
-      if(tileCode == 0){
+      if(tileCode == store.OUTER_TILE_ID){
         t.classList.add("tile-moveTo");
         t.classList.add("tile-default");
         t.classList.add("hidden");
@@ -131,10 +141,16 @@ export default {
     },
     selectNewTile() {
       let cl;
-      if(document.getElementById("piece_number").value != null) { this.storeTileData(); }
+      if(!this.isEmpty(document.getElementById("piece_data").value)) { this.storeTileData(); }
       this.deselectCurrentTile();
       selectedTile.id = event.target.id;
       selectedTile.element = document.getElementById(selectedTile.id);
+      selectedPiece.id = store.board[selectedTile.id];
+      selectedPiece.id = parseInt(selectedPiece.id);
+      if(selectedPiece.id >= 0){
+        selectedPiece.data = store.customPieces[selectedPiece.id].data
+      }
+      console.log("Backend board @ selected tile:" + store.board[selectedTile.id]);
       cl = selectedTile.element.classList;
       if(cl.contains("dark")){
           cl.remove("dark");
@@ -144,7 +160,7 @@ export default {
           cl.remove("light");
           cl.add("selected-light");
       }
-      this.loadTileData();
+      if(selectedPiece.id >= 0){ this.loadTileData(); }
     }, 
     deselectCurrentTile() {
       let cl;
@@ -161,21 +177,24 @@ export default {
       }
     }, 
     storeTileData() {
-      let data = document.getElementById("piece_number").value;
-      if(store.board[selectedTile.id] > 0){
-        store.customPieces[store.board[selectedTile.id]] = data;
+      if(selectedPiece.id >= 0){
+        store.board[selectedTile.id] = selectedPiece.id;
+        store.customPieces[selectedPiece.id] = document.getElementById("piece_data").value;
       }
-      else {
-        store.customPieces[nextPiece] = data;
-        store.board[selectedTile.id] = nextPiece;
-        nextPiece++;
-        store.numPieces++;
+      else{
+        store.board[selectedTile.id] = nextPieceId;
+        store.customPieces[nextPieceId] = document.getElementById("piece_data").value;
+        nextPieceId++;
       }
-      
-      document.getElementById("piece_number").value = null;
+      document.getElementById("piece_data").value = null;
     }, 
     loadTileData() {
-      document.getElementById("piece_number").value = store.customPieces[store.board[selectedTile.id]];
+      if(store.customPieces[selectedPiece.id] != undefined){
+        document.getElementById("piece_data").value = store.customPieces[selectedPiece.id];
+      }
+    }, 
+    isEmpty(str) {
+      return !str.trim().length;
     }
   }
 }
