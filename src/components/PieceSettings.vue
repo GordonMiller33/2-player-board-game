@@ -8,8 +8,14 @@
       </table>
     </div>
   </div>
-  <p><b>Piece Data</b></p>
-  <input id="piece_data" placeholder="edit me" />
+  <div id="piece-settings" class="hidden">
+    <p><b>Piece Color</b></p>
+    <input id="piece_color" placeholder="edit me" />
+    <p><b>Piece Speed</b></p>
+    <input id="piece_speed" placeholder="edit me" />
+    <br><br>
+    <button v-on:click="storeTileData()"> Add Piece </button>
+  </div>
 </template>
 
 <script setup>
@@ -38,7 +44,10 @@ let selectedTile = {
 
 let selectedPiece = {
   id: -1,
-  data: null
+  data: {
+    color: null,
+    speed: 1
+  }
 }
 
 export default {  
@@ -140,16 +149,13 @@ export default {
       }
     },
     selectNewTile() {
+      document.getElementById("piece-settings").classList.remove("hidden");
       let cl;
-      if(!this.isEmpty(document.getElementById("piece_data").value)) { this.storeTileData(); }
+      if((!this.isEmpty(document.getElementById("piece_color").value)) && (!this.isEmpty(document.getElementById("piece_speed").value))) { this.storeTileData(); }
       this.deselectCurrentTile();
       selectedTile.id = event.target.id;
       selectedTile.element = document.getElementById(selectedTile.id);
       selectedPiece.id = store.board[selectedTile.id];
-      selectedPiece.id = parseInt(selectedPiece.id);
-      if(selectedPiece.id >= 0){
-        selectedPiece.data = store.customPieces[selectedPiece.id].data
-      }
       console.log("Backend board @ selected tile:" + store.board[selectedTile.id]);
       cl = selectedTile.element.classList;
       if(cl.contains("dark")){
@@ -177,20 +183,27 @@ export default {
       }
     }, 
     storeTileData() {
+      console.log("storing tile data");
+      selectedPiece.data.color = document.getElementById("piece_color").value;
+      selectedPiece.data.speed = document.getElementById("piece_speed").value;
       if(selectedPiece.id >= 0){
         store.board[selectedTile.id] = selectedPiece.id;
-        store.customPieces[selectedPiece.id] = document.getElementById("piece_data").value;
+        store.customPieces[selectedPiece.id] = selectedPiece.data;
       }
       else{
         store.board[selectedTile.id] = nextPieceId;
-        store.customPieces[nextPieceId] = document.getElementById("piece_data").value;
+        store.customPieces[nextPieceId] = selectedPiece.data;
         nextPieceId++;
       }
-      document.getElementById("piece_data").value = null;
+      document.getElementById("piece_color").value = null;
+      document.getElementById("piece_speed").value = null;
     }, 
     loadTileData() {
       if(store.customPieces[selectedPiece.id] != undefined){
-        document.getElementById("piece_data").value = store.customPieces[selectedPiece.id];
+        selectedPiece.data.color = store.customPieces[selectedPiece.id].color;
+        selectedPiece.data.speed = store.customPieces[selectedPiece.id].speed;
+        document.getElementById("piece_color").value = store.customPieces[selectedPiece.id].color;
+        document.getElementById("piece_speed").value = store.customPieces[selectedPiece.id].speed;
       }
     }, 
     isEmpty(str) {
