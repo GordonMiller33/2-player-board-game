@@ -21,8 +21,6 @@
 <script setup>
 console.log("------script setup------")
 import { useBaseStore } from '@/stores/BaseStore.js';
-import { storeToRefs } from 'pinia';
-const { customPieces } = storeToRefs(store);
 </script>
 <script>
 import GameTile from '@/components/GameTile.vue'
@@ -65,7 +63,7 @@ export default {
     totalWidth = boardWidth+maxPieceMovement*2;
 
     if(store.board.length != (totalWidth * totalWidth)){
-      store.customPieces = new Map();
+      store.customPieces = [];
       for(let i = 0; i < totalWidth; i++){
         for(let j = 0; j < totalWidth; j++){
           let index = (totalWidth*i+j);
@@ -79,7 +77,7 @@ export default {
       }
     }
     else{
-      nextPieceId = store.customPieces.size;
+      nextPieceId = store.customPieces.length;
     }
     console.log("customPieces: " + store.customPieces);
 
@@ -152,33 +150,6 @@ export default {
     },
     selectNewTile() {
       document.getElementById("piece-settings").classList.remove("hidden");
-<<<<<<< Updated upstream
-=======
-      let tileId = event.target.id;
-      if(tileId.includes("p")){
-        tileId = document.getElementById(event.target.id).parentNode.id;
-      }
-      if(tileId != selectedTile.Id){  
-        if(!this.isDataStored(tileId)) { 
-          if(confirm("Are you sure you wish to select a new tile? Piece settings at this tile will be lost")){
-            this.deselectCurrentTile();
-            this.selectNewTile(tileId);
-          }
-        }
-        else{
-          this.deselectCurrentTile();
-          this.selectNewTile(tileId);
-        }
-      }
-      console.log("CUSTOM PIECES:");
-      for(let i=0;i<store.customPieces.size;i++){
-        console.log(store.customPieces.get(i).color + " " + store.customPieces.get(i).speed);
-      }
-    }, 
-    deselectCurrentTile() {
-      document.getElementById("piece_color").value = null;
-      document.getElementById("piece_speed").value = null;
->>>>>>> Stashed changes
       let cl;
       if((!this.isEmpty(document.getElementById("piece_color").value)) && (!this.isEmpty(document.getElementById("piece_speed").value))) { this.storeTileData(); }
       this.deselectCurrentTile();
@@ -217,69 +188,26 @@ export default {
       selectedPiece.data.speed = document.getElementById("piece_speed").value;
       if(selectedPiece.id >= 0){
         store.board[selectedTile.id] = selectedPiece.id;
-        store.customPieces.set(selectedPiece.id, selectedPiece.data);
+        store.customPieces[selectedPiece.id] = selectedPiece.data;
       }
       else{
         store.board[selectedTile.id] = nextPieceId;
-<<<<<<< Updated upstream
         store.customPieces[nextPieceId] = selectedPiece.data;
         nextPieceId++;
       }
       document.getElementById("piece_color").value = null;
       document.getElementById("piece_speed").value = null;
-=======
-        console.log("storing in customPieces[" + nextPieceId + "]");
-        store.customPieces.set(nextPieceId, selectedPiece.data);
-        selectedPiece.id = nextPieceId;
-        nextPieceId++;
-      }
-      console.log("CUSTOM PIECES:");
-      for(let i=0;i<store.customPieces.size;i++){
-        console.log(store.customPieces.get(i).color + " " + store.customPieces.get(i).speed);
-      }
->>>>>>> Stashed changes
     }, 
     loadTileData() {
-      if(store.customPieces.get(selectedPiece.id) != undefined){
-        selectedPiece.data.color = store.customPieces.get(selectedPiece.id).color;
-        selectedPiece.data.speed = store.customPieces.get(selectedPiece.id).speed;
-        document.getElementById("piece_color").value = store.customPieces.get(selectedPiece.id).color;
-        document.getElementById("piece_speed").value = store.customPieces.get(selectedPiece.id).speed;
+      if(store.customPieces[selectedPiece.id] != undefined){
+        selectedPiece.data.color = store.customPieces[selectedPiece.id].color;
+        selectedPiece.data.speed = store.customPieces[selectedPiece.id].speed;
+        document.getElementById("piece_color").value = store.customPieces[selectedPiece.id].color;
+        document.getElementById("piece_speed").value = store.customPieces[selectedPiece.id].speed;
       }
     }, 
-<<<<<<< Updated upstream
     isEmpty(str) {
       return !str.trim().length;
-=======
-    isDataStored() {
-      if(store.customPieces.get(selectedPiece.id) != null){
-        let color = document.getElementById("piece_color").value.trim();
-        let speed = document.getElementById("piece_speed").value.trim();
-        return (color == store.customPieces.get(selectedPiece.id).color && speed == store.customPieces.get(selectedPiece.id).speed);
-      }
-      else{
-        return true;
-      }
-    },
-    addPiece() {
-      console.log("---adding piece---")
-      if(store.board[selectedTile.id] == -1){
-        let piece = document.createElement("span");
-        piece.classList.add("piece");
-        piece.style.backgroundColor = document.getElementById("piece_color").value.trim();
-        piece.id = "p" + nextPieceId;
-        selectedTile.element.appendChild(piece);
-      }
-      else{
-        console.log("looking for piece with id " + "p" + selectedPiece.id);
-        document.getElementById("p" + selectedPiece.id).style.backgroundColor = document.getElementById("piece_color").value.trim();
-      }
-      console.log("CUSTOM PIECES:");
-      for(let i=0;i<store.customPieces.size;i++){
-        console.log(store.customPieces.get(i).color + " " + store.customPieces.get(i).speed);
-      }
-      this.storeTileData();
->>>>>>> Stashed changes
     }
   }
 }
