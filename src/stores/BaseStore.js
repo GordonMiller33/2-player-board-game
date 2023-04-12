@@ -8,7 +8,7 @@ export const useBaseStore = defineStore( "BaseStore", {
 			movementSpeed: 2,
 			piecesPerPlayer: 2,
 			numPieces: 0,
-			customPieces: [],
+			customPieces: new Map(),
 			board: [],
 			OUTER_TILE_ID: -2,
 			EMPTY_TILE_ID: -1,
