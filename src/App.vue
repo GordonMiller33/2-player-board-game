@@ -1,7 +1,7 @@
 <template>
   <nav>
     <router-link to="/">Board Settings</router-link> |
-    <router-link to="/pieces">Piece Settings</router-link> |
+    <router-link to="/pieces">Add Pieces</router-link> |
     <router-link to="/game">Play Game</router-link> |
     <router-link to="/test">Test</router-link>
   </nav>

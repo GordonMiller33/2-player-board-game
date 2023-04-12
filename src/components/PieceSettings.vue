@@ -14,7 +14,7 @@
     <p><b>Piece Speed</b></p>
     <input id="piece_speed" placeholder="edit me" />
     <br><br>
-    <button v-on:click="addPiece()"> Add/Edit Piece </button>
+    <button v-on:click="addPiece(selectedTile.id)"> Add/Update Piece </button>
   </div>
 </template>
 
@@ -62,8 +62,9 @@ export default {
     maxPieceMovement = parseInt(store.movementSpeed);
     totalWidth = boardWidth+maxPieceMovement*2;
 
-    if(store.board.length != (totalWidth * totalWidth)){
+    if(store.totalWidth != totalWidth){
       store.customPieces = [];
+      store.board = [];
       for(let i = 0; i < totalWidth; i++){
         for(let j = 0; j < totalWidth; j++){
           let index = (totalWidth*i+j);
@@ -75,23 +76,12 @@ export default {
           }
         }
       }
+      store.totalWidth = totalWidth;
     }
     else{
       nextPieceId = this.getNumPieces();
     }
     console.log("customPieces: " + store.customPieces);
-
-    for(let i = 0; i < totalWidth; i++){
-      for(let j = 0; j < totalWidth; j++){
-        let index = (totalWidth*i+j);
-        if(i < maxPieceMovement || i >= boardWidth + maxPieceMovement || j < maxPieceMovement|| j >= boardWidth + maxPieceMovement){
-          board[index] = store.board[index];
-        }
-        else{
-          board[index] = store.board[index];
-        }
-      }
-    }
 
     
   },
@@ -109,21 +99,20 @@ export default {
   },
   methods: {
     updateBoard() {
-      for(let i = 0; i < board.length; i++) {
-        if(board[i] > store.EMPTY_TILE_ID) {
-          //comment
-
+      for(let i = 0; i < store.board.length; i++) {
+        if(store.board[i] > store.EMPTY_TILE_ID) {
+          this.loadPiece(i);
         }
       }
     },
     setInitalTileProperties(){
       let lightFlag = false;
       for (let i = 0; i < totalWidth; i++){
-        lightFlag = !lightFlag;
+        if(totalWidth%2 == 0) { lightFlag = !lightFlag; }
         for (let j = 0; j < totalWidth; j++){
           let index = (totalWidth*i+j);
-          this.setTile(index, board[index], lightFlag);
-          lightFlag = !lightFlag;
+          this.setTile(index, store.board[index], lightFlag);
+           lightFlag = !lightFlag;
         }
       }
     },
@@ -157,7 +146,7 @@ export default {
       }
       if(tileId != selectedTile.Id){  
         if(!this.isDataStored(tileId)) { 
-          if(confirm("Are you sure you wish to select a new tile? Piece settings at this tile will be lost")){
+          if(confirm("Are you sure you wish to select a new tile? Any changes to the piece at this location will be lost")){
             this.deselectCurrentTile();
             this.selectNewTile(tileId);
           }
@@ -250,9 +239,9 @@ export default {
         return true;
       }
     },
-    addPiece() {
+    addPiece(tileId) {
       console.log("---adding piece---")
-      if(store.board[selectedTile.id] == -1){
+      if(store.board[tileId] == store.EMPTY_TILE_ID){
         let piece = document.createElement("span");
         piece.classList.add("piece");
         piece.style.backgroundColor = document.getElementById("piece_color").value.trim();
@@ -268,6 +257,16 @@ export default {
         console.log(this.getColor(i) + " " + this.getSpeed(i));
       }
       this.storeTileData();
+    },
+    loadPiece(tileId) {
+      console.log("---loading piece---")
+      let pId = store.board[tileId];
+      let piece = document.createElement("span");
+      piece.classList.add("piece");
+      console.log("loading custom piece # " + pId);
+      piece.style.backgroundColor = this.getColor(pId);
+      piece.id = "p" + pId;
+      document.getElementById(tileId).appendChild(piece);
     },
     getSpeed(index){
       return store.customPieces[2*index+1];
